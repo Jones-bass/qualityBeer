@@ -19,23 +19,33 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = 'Cliente';
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name'),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('document')
-                    ->required(),
-                Forms\Components\DatePicker::make('birthdate')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-                Forms\Components\TextInput::make('mobile')
-                    ->required(),
+            ->columns([
+                Tables\Columns\TextColumn::make(name: 'user.name')
+                    ->label(label: 'Usuário')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make(name: 'document')
+                    ->label(label: 'Documento')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make(name: 'email')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make(name: 'mobile')
+                    ->label(label: 'Celulardd')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make(name: 'created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
             ]);
     }
 

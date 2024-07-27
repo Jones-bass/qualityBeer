@@ -14,7 +14,6 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-
         Customer::factory(20)->create([
             'name' => fake()->name,
             'document' => fake()->cpf,

@@ -6,6 +6,7 @@ use App\Enums\PanelTypeEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -34,6 +35,7 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
+        'panel' => PanelTypeEnum::class,
     ];
 
     /**
@@ -46,6 +48,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'panel' => PanelTypeEnum::class,
         ];
     }
 
@@ -60,11 +63,12 @@ class User extends Authenticatable implements FilamentUser
 
             return true;
         }
-        return true;
+
+        return false;
     }
 
-    public function customer(): HasOne  
+    public function customer(): BelongsTo
     {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 }

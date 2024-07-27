@@ -19,20 +19,29 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = 'Usuário';
+ 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
+                Forms\Components\TextInput::make('name')        
+                    ->required()
+                    ->maxLength(255),
+
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->maxLength(255)
                     ->required(),
+
                 Forms\Components\TextInput::make('panel')
                     ->required(),
+                
                 Forms\Components\DateTimePicker::make('email_verified_at'),
+
                 Forms\Components\TextInput::make('password')
                     ->password()
+                    ->maxLength(255)
                     ->required(),
             ]);
     }
