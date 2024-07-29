@@ -20,30 +20,28 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $modelLabel = 'Usuário';
- 
+
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')        
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255)
-                    ->required(),
-
-                Forms\Components\TextInput::make('panel')
-                    ->required(),
-                
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->maxLength(255)
-                    ->required(),
-            ]);
+        ->schema([
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('email')
+                ->email()
+                ->required()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('panel')
+                ->required()
+                ->maxLength(255)
+                ->default('app'),
+            Forms\Components\DateTimePicker::make('email_verified_at'),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->required()
+                ->maxLength(255),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -73,6 +71,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -81,19 +80,10 @@ class UserResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ManageUsers::route('/'),
         ];
     }
 }

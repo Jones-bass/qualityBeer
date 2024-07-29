@@ -17,6 +17,8 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
+        //$faker = \Faker\Factory::create('pt_BR');
+
         return [
             'user_id' => User::factory()->create(),
             'name' => fake()->name,

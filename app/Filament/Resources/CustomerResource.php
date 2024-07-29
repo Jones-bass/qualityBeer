@@ -24,63 +24,76 @@ class CustomerResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns([
-                Tables\Columns\TextColumn::make(name: 'user.name')
-                    ->label(label: 'Usuário')
-                    ->searchable()
-                    ->sortable(),
+            ->schema([
+                //                Select::make('user_id')
+                //                    ->label('Usuário')
+                //                    ->searchable()
+                //                    ->relationship('user', 'name')
+                //                    ->required(),
 
-                Tables\Columns\TextColumn::make(name: 'document')
-                    ->label(label: 'Documento')
-                    ->searchable(),
+                Forms\Components\TextInput::make('name')
+                    ->label('Nome Completo')
+                    ->required()
+                    ->maxLength(255),
 
-                Tables\Columns\TextColumn::make(name: 'email')
-                    ->searchable(),
+                Forms\Components\TextInput::make('document')
+                    ->label('Documento')
+                    ->required()
+                    ->maxLength(255),
 
-                Tables\Columns\TextColumn::make(name: 'mobile')
-                    ->label(label: 'Celulardd')
-                    ->searchable(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
 
-                Tables\Columns\TextColumn::make(name: 'created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Forms\Components\DatePicker::make('birthdate')
+                    ->label('Data Nascimento')
+                    ->required(),
 
+                Forms\Components\TextInput::make('mobile')
+                    ->label('Celular')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
+            ->columns([ 
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('document')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('birthdate')
-                    ->date()
+                    ->label('Usuário')
+                    ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('document')
+                    ->label('Documento')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('mobile')
+                    ->label('Celular')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -89,19 +102,10 @@ class CustomerResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'index' => Pages\ManageCustomers::route('/'),
         ];
     }
 }

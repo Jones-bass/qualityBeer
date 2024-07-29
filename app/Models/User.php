@@ -7,9 +7,8 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUser
@@ -35,40 +34,34 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
-        'panel' => PanelTypeEnum::class,
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'panel' => PanelTypeEnum::class,
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'panel' => PanelTypeEnum::class,
+    ];
 
     public function canAccessPanel(Panel $panel): bool
     {
         if ($this->panel === PanelTypeEnum::ADMIN) {
-
             return true;
         }
 
         if ($this->panel === PanelTypeEnum::APP) {
-
             return true;
         }
 
         return false;
     }
 
-    public function customer(): BelongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(Customer::class);
+        return $this->hasOne(User::class);
     }
 }
